@@ -1,1 +1,3 @@
 Sistema web para gerenciamento de pacientes pleurais 
+
+Necessario rodar em um servidor local(recomenda-se node http-server)
