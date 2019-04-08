@@ -11,21 +11,60 @@ $(document).ready(function () {
 	});
 });
 
+
+let id = 42
 function xmlParser(xml) {
 	console.log("xml");
 	xmlFile = xml;
 	console.log(xmlFile);
-	/*$(xml).find("paciente").each(function () {
+	$(xml).find("paciente").each(function () {
 	    np = parseInt($(this).find("numeroPaciente").text());
-
-	    if (np == null) {
-	    	np = "Paciente sem número";
+	    if (np == id) { //aparentemente dois pacientes podem ter o mesmo numero :(
+	    	var p = new Patient(np, $(this));
+	    	endereco = p.setEnredeco();
+	    	endereco = $(endereco);
+	    	$("body").append(endereco);
+	    	id = null;
 	    }
-	    console.log(np);
- 	});*/
+
+
+ 	});
 }
 
 function buildPatient(id){
+
+}
+
+class Patient{
+	constructor(id, paciente){
+		this.id = id
+		this.paciente = paciente
+	}
+	setEnredeco(){
+		this.logradouro = this.paciente.find("logradouro").text();
+		this.numero = this.paciente.find("numero").text();
+		this.estado = this.paciente.find("estadoEndereco").text();
+		this.complemento = this.paciente.find("complemento").text();
+		this.municipio =this.paciente.find("municipioEndereco").text();
+		this.bairro = this.paciente.find("bairroEndereco").text();
+		this.cep = this.paciente.find("cep").text();
+
+		var element = "<div class='card' style='width: 18rem;'> \
+						  <div class='card-header'>\
+						    Endereço\
+						  </div>\
+						  <ul class='list-group list-group-flush'>\
+						    <li class='list-group-item'>Rua: "+this.logradouro +"</li>\
+						    <li class='list-group-item'>Número: "+this.numero+"</li>\
+						    <li class='list-group-item'>Estado: "+this.estado+"</li>\
+						    <li class='list-group-item'>Complemento: "+this.complemento+"</li>\
+						    <li class='list-group-item'>Municipio: "+this.municipio+"</li>\
+						    <li class='list-group-item'>Bairro: "+this.bairro+"</li>\
+						    <li class='list-group-item'>Cep: "+this.cep+"</li>\
+						  </ul>\
+						</div>"
+		return element
+	}
 
 }
 
