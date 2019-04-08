@@ -289,16 +289,17 @@
     <tv>NR</tv>
     <selecinouDvd>verdadeiro</selecinouDvd>
     <dvd>NR</dvd>
-    <!-- DESLOCADO -->
+    <!-- DESLOCADO => Local -->
     <estadoNaturalidade>Minas Gerais MG</estadoNaturalidade>
     <cidadeNaturalidade>xx</cidadeNaturalidade>
     <tempoEnderecoAtual>0</tempoEnderecoAtual>
     <selecionouMorouOutro>verdadeiro</selecionouMorouOutro>
     <morouOutro>Não</morouOutro>
+    <!--xxxxxxxxxxxxxxxxxxxxxxxxxxx-->
     <numeroPessoas>0</numeroPessoas>
     <numeroComodos>00</numeroComodos>
     <numeroDormitorios>0</numeroDormitorios>
-    <!--                                     -->
+    
     <selecionouMoradorRua>verdadeiro</selecionouMoradorRua>
     <moradorRua>Não</moradorRua>
     <selecionouMoradorAsilo>verdadeiro</selecionouMoradorAsilo>
