@@ -22,18 +22,17 @@ function xmlParser(xml) {
 	    if (np == id) { //aparentemente dois pacientes podem ter o mesmo numero :(
 	    	
 	    	var p = new Patient(np, $(this));
-	    	endereco = p.setEnredeco();
+	    	let endereco = p.setEnredeco();
 	    	endereco = $(endereco);
-	    	openModalPaciente();
+	    	let pessoais = $(p.setInfoPessoais());
+	    	let vicios = $(p.setVicios());
+
+	    	
 	    	$("#modal-body").append(endereco);
-	    	$("#modal-body").append(endereco);
-	    	$("#modal-body").append($("<p style='float:left; display:table'>Teste</p>"));
-	    	$("#modal-body").append($("<p>Teste</p>"));
-	    	$("#modal-body").append($("<h1>Teste</h1>"));
-	    	$("#modal-body").append($("<h1>Teste</h1>"));
-	    	$("#modal-body").append($("<h1>Teste</h1>"));
-	    	$("#modal-body").append($("<h1>Teste</h1>"));
+	    	$("#modal-body").append(pessoais);
+	    	$("#modal-body").append(vicios);
 	    	id = null;
+	    	openModalPaciente();
 	    }
 
 
@@ -61,6 +60,7 @@ class Patient{
 		this.municipio =this.paciente.find("municipioEndereco").text();
 		this.bairro = this.paciente.find("bairroEndereco").text();
 		this.cep = this.paciente.find("cep").text();
+		this.cidadeNaturalidade = this.paciente.find("cidadeNaturalidade").text();
 
 		var element = "<div class='card' style='width: 18rem; display:inline-block; float:left'> \
 						  <div style='background-color:lightblue;' class='card-header'>\
@@ -74,15 +74,125 @@ class Patient{
 						    <li class='list-group-item'>Municipio: "+this.municipio+"</li>\
 						    <li class='list-group-item'>Bairro: "+this.bairro+"</li>\
 						    <li class='list-group-item'>Cep: "+this.cep+"</li>\
+						    <li class='list-group-item'>Natural de: "+this.cidadeNaturalidade+"</li>\
 						  </ul>\
 						</div>"
 		return element
 	}
 	setInfoPessoais(){
-		this.telefone1 = this.
+		this.telefone1 = this.paciente.find("telefone1").text();
+		this.diaNascimento = this.paciente.find("txt_diaNascimento").text();
+		this.mesNascimento = this.paciente.find("txt_mesNascimento").text();
+		this.anoNascimento = this.paciente.find("txt_anoNascimento").text();
+		this.sexo = this.paciente.find("sexo").text();
+		this.estadoCivil = this.paciente.find("estadoCivil").text();
+		this.estuda = this.paciente.find("estudaMomento").text();
+		this.ocupacao = this.paciente.find("ocupacao").text();
+		this.atividadeTrabalho = this.paciente.find("atividadeTrabalho").text()
+		this.rendaFamiliarAtual = this.paciente.find("rendaFamiliarAtual").text();
+		this.moradorRua = this.paciente.find("moradorRua").text();
+		this.moradorAsilo = this.paciente.find("moradorAsilo").text();
+		this.exDetento = this.paciente.find("exDetento").text();
+
+		var element = "<div class='card' style='width: 18rem; display:inline-block; float:left'> \
+						  <div style='background-color:lightblue;' class='card-header'>\
+						    Informações pessoais\
+						  </div>\
+						  <ul class='list-group list-group-flush'>\
+						    <li class='list-group-item'>Telefone: "+this.telefone1 +"</li>\
+						    <li class='list-group-item'>Nascimento:"+this.diaNascimento+"/"+this.mesNascimento+"/"+this.anoNascimento+"</li>\
+						    <li class='list-group-item'>Sexo: "+this.sexo+"</li>\
+						    <li class='list-group-item'>Estado Civil: "+this.estadoCivil+"</li>\
+						    <li class='list-group-item'>Estudante: "+this.estuda+"</li>\
+						    <li class='list-group-item'>Ocupação: "+this.ocupacao+"</li>\
+						    <li class='list-group-item'>Renda Familiar: "+this.rendaFamiliarAtual+"</li>\
+						  	<li class='list-group-item'>Morados de rua: "+this.moradorRua+"</li>\
+						  	<li class='list-group-item'>Morador de Asilo: "+this.moradorAsilo+"</li>\
+						 	<li class='list-group-item'>Ex detento: "+this.exDetento+"</li>\
+						  </ul>\
+						</div>"
+		return element
+	}
+	setVicios(){
+		this.habitoFumar = this.paciente.find("habitoFumar").text();
+		this.inalaFumaca = this.paciente.find("inalaFumaca").text();
+		this.habitoFumar = this.paciente.find("habitoFumar").text();
+		this.cigarrosDia = this.paciente.find("cigarrosDia").text();
+		this.anosFuma = this.paciente.find("anosFuma").text();
+		this.cargaTabagica = this.paciente.find("cargaTabagica").text();
+		this.tempoParou = [this.paciente.find("tempoParouDias").text(),this.paciente.find("tempoParouMeses").text(), this.paciente.find("tempoParouAnos").text()];
+		for (var i = 0; i < this.tempoParou.length; i++) {
+			console.log(this.tempoParou[i]);
+			if (this.tempoParou[i] == '') {
+				this.tempoParou[i] = "0";
+			}
+		}
+
+		this.usuarioDrogas = this.paciente.find("usuarioDrogas").text();
+		this.bebidaPreferida = this.paciente.find("bebidaPreferida").text();
+		this.bebe = this.paciente.find("tomaBebida").text();
+		this.recebeuCritica = this.paciente.find("recebeuCritica").text();
+		this.deveriaDiminuir = this.paciente.find("deveriaDiminuir").text();
+		this.bebeManha = this.paciente.find("bebeManha").text();
+		this.senteCulpa = this.paciente.find("senteCulpa").text();
+
+		if(this.habitoFumar == "Jamais Fumante" || this.habitoFumar == ""){
+			var element = "<div class='card' style='width: 100%; display:inline-block; float:left'> \
+						  <div style='background-color:lightblue;' class='card-header'>\
+						    Vícios\
+						  </div>\
+						  <ul style='float: left; display:table' class='list-group list-group-flush'>\
+						    <li class='list-group-item'>Fumante: "+this.habitoFumar +"</li>\
+						    <li class='list-group-item'>Usa drogas: "+this.usuarioDrogas+"</li>\
+						    <li class='list-group-item'>Bebe: "+this.bebe+"</li>\
+						    <li class='list-group-item'>Bebebida preferida: "+this.bebidaPreferida+"</li>\
+						  </ul> \
+						  <ul style='float: left; display:table' class='list-group list-group-flush'>\
+						    <li class='list-group-item'>Recebeu Crítica por beber: "+this.recebeuCritica+"</li>\
+						    <li class='list-group-item'>Deveria beber menos: "+this.deveriaDiminuir+"</li>\
+						    <li class='list-group-item'>Bebe pela manhã: "+this.bebeManha+"</li>\
+						  	<li class='list-group-item'>Sente Culpa ao beber: "+this.senteCulpa+"</li>\
+						  </ul>\
+						</div>"
+		}else{
+			/*
+			this.inalaFumaca = this.paciente.find("inalaFumaca").text();
+		this.habitoFumar = this.paciente.find("habitoFumar").text();
+		this.cigarrosDia = this.paciente.find("cigarrosDia").text();
+		this.anosFuma = this.paciente.find("anosFuma").text();
+		this.cargaTabagica = this.paciente.find("cargaTabagica").text();
+		this.tempoParou = [this.paciente.find("tempoParouDias"),this.paciente.find("tempoParo
+		*/
+			var element = "<div class='card' style='width: 100%; display:inline-block; float:left'> \
+						  <div style='background-color:lightblue;' class='card-header'>\
+						    Vícios\
+						  </div>\
+						  <ul style='float: left; display:table' class='list-group list-group-flush'>\
+						    <li class='list-group-item'>Fumante: "+this.habitoFumar +"</li>\
+						    <li class='list-group-item'>Cigarros por dia: "+this.cigarrosDia +"</li>\
+						    <li class='list-group-item'>Inala fumaça: "+this.inalaFumaca +"</li>\
+						    <li class='list-group-item'>Carga Tabágica: "+this.cargaTabagica +"</li>\
+						    <li class='list-group-item'>Carga Tempo sem fumar: "+this.tempoParou[0] + " dias, "+this.tempoParou[1]+" meses e "+ this.tempoParou[2] +" anos</li>\
+						    <li class='list-group-item'>Usa drogas:"+this.usuarioDrogas+"</li>\
+						</ul> \
+						<ul style='float:left' class='list-group list-group-flush'>\
+						    <li class='list-group-item'>Bebe:"+this.bebe+"</li>\
+						    <li class='list-group-item'>Bebebida preferida: "+this.bebidaPreferida+"</li>\
+						    <li class='list-group-item'>Recebeu Crítica por beber: "+this.recebeuCritica+"</li>\
+						    <li class='list-group-item'>Deveria beber menos: "+this.deveriaDiminuir+"</li>\
+						    <li class='list-group-item'>Bebe pela manhã: "+this.bebeManha+"</li>\
+						  	<li class='list-group-item'>Sente Culpa ao beber: "+this.senteCulpa+"</li>\
+						  </ul>\
+						</div>"
+
+		}
+		return element;
+		}
+
+		
 	}
 
-}
+
 
 /*class PatientUtil {
     constructor(id, logradouro,numero,complemento, estadoEndereco,

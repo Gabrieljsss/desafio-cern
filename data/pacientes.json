@@ -23,6 +23,7 @@
 				"estadoCivil": "Não respondeu",
 				"selecionouEstudaMomento": "verdadeiro",
 				"estudaMomento": "Não Respondeu",
+				//acho desncessario para inicio esses aqui pra baixo
 				"selecinouGrauInstrucao": "verdadeiro",
 				"grauInstrucao": "Não respondeu",
 				"selecinouOcupacao": "verdadeiro",
@@ -60,6 +61,7 @@
 				"tv": "NR",
 				"selecinouDvd": "verdadeiro",
 				"dvd": "NR",
+				// ------------------------------------------------
 				"estadoNaturalidade": "Rio de Janeiro RJ",
 				"cidadeNaturalidade": "Rio de janeiro",
 				"tempoEnderecoAtual": "0",
@@ -74,6 +76,7 @@
 				"moradorAsilo": "Não",
 				"selecionouExDetento": "verdadeiro",
 				"exDetento": "Sim",
+				// Aqui começam os vicios e riscos
 				"selecionouHabitoFumar": "jamaisFumante",
 				"habitoFumar": "Jamais Fumante",
 				"selecionouInalaFumaca": "verdadeiro",
@@ -104,6 +107,7 @@
 				"trabalhoTuberculose": "Não",
 				"quantoTempoContato": "",
 				"horasSemanaisContato": "",
+				// aqui comeca historico com tuberculose e exames
 				"selecionouTeveTuberculose": "sim",
 				"teveTuberculose": "Sim",
 				"quantosAnos": "12",
