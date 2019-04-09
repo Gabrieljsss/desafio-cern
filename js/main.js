@@ -20,10 +20,19 @@ function xmlParser(xml) {
 	$(xml).find("paciente").each(function () {
 	    np = parseInt($(this).find("numeroPaciente").text());
 	    if (np == id) { //aparentemente dois pacientes podem ter o mesmo numero :(
+	    	
 	    	var p = new Patient(np, $(this));
 	    	endereco = p.setEnredeco();
 	    	endereco = $(endereco);
-	    	$("body").append(endereco);
+	    	openModalPaciente();
+	    	$("#modal-body").append(endereco);
+	    	$("#modal-body").append(endereco);
+	    	$("#modal-body").append($("<p style='float:left; display:table'>Teste</p>"));
+	    	$("#modal-body").append($("<p>Teste</p>"));
+	    	$("#modal-body").append($("<h1>Teste</h1>"));
+	    	$("#modal-body").append($("<h1>Teste</h1>"));
+	    	$("#modal-body").append($("<h1>Teste</h1>"));
+	    	$("#modal-body").append($("<h1>Teste</h1>"));
 	    	id = null;
 	    }
 
@@ -33,6 +42,10 @@ function xmlParser(xml) {
 
 function buildPatient(id){
 
+}
+
+function openModalPaciente(){
+	$("#patientModal").modal("show");
 }
 
 class Patient{
@@ -49,8 +62,8 @@ class Patient{
 		this.bairro = this.paciente.find("bairroEndereco").text();
 		this.cep = this.paciente.find("cep").text();
 
-		var element = "<div class='card' style='width: 18rem;'> \
-						  <div class='card-header'>\
+		var element = "<div class='card' style='width: 18rem; display:inline-block; float:left'> \
+						  <div style='background-color:lightblue;' class='card-header'>\
 						    Endereço\
 						  </div>\
 						  <ul class='list-group list-group-flush'>\
@@ -64,6 +77,9 @@ class Patient{
 						  </ul>\
 						</div>"
 		return element
+	}
+	setInfoPessoais(){
+		this.telefone1 = this.
 	}
 
 }
