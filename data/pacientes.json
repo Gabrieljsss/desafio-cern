@@ -99,6 +99,7 @@
 				"selecionouRecebeuCritica": "falso",
 				"selecionouBebeManha": "falso",
 				"selecionouSenteCulpa": "falso",
+				// aqui comeca historico com tuberculose e exames
 				"selecionouMorouTuberculose": "nao",
 				"morouTuberculose": "Não",
 				"selecionouFamiliaTuberculose": "nao",
@@ -107,8 +108,8 @@
 				"trabalhoTuberculose": "Não",
 				"quantoTempoContato": "",
 				"horasSemanaisContato": "",
-				// aqui comeca historico com tuberculose e exames
 				"selecionouTeveTuberculose": "sim",
+				//
 				"teveTuberculose": "Sim",
 				"quantosAnos": "12",
 				"selecionouTratamento": "verdadeiro",
@@ -126,6 +127,7 @@
 				"comorbidades": "Ignorado",
 				"selecionouQuaisComorbidades": "falso",
 				"quaisComorbidadesOutras": "",
+				//feito ate aqui
 				"selecionouSinaisSintomas": "sim",
 				"sinaisSintomas": "Sim",
 				"selecionouQuaisSinaisSintomas": "falso",

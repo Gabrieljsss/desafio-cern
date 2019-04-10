@@ -1,18 +1,27 @@
 let numeroPaciente = []
 let xmlFile
+let id = 42
 
 
 $(document).ready(function () {
+	$("#getPatientById").click(function(){
+		id = $("#patientId").val();
+		$("#titulo-paciente-modal").text("Paciente " + id);
+		$("#modal-body").empty();
+		xmlRequest();
+	});
+});
+
+
+function xmlRequest(){
 	$.ajax({
 	    type: "GET",
 	    url: "data/pacientes.xml",
 	    dataType: "xml",
 	    success: xmlParser
 	});
-});
+}
 
-
-let id = 42
 function xmlParser(xml) {
 	console.log("xml");
 	xmlFile = xml;
@@ -26,11 +35,13 @@ function xmlParser(xml) {
 	    	endereco = $(endereco);
 	    	let pessoais = $(p.setInfoPessoais());
 	    	let vicios = $(p.setVicios());
+	    	let historico = $(p.setHistoricoTuberculose());
 
 	    	
 	    	$("#modal-body").append(endereco);
 	    	$("#modal-body").append(pessoais);
 	    	$("#modal-body").append(vicios);
+	    	$("#modal-body").append(historico);
 	    	id = null;
 	    	openModalPaciente();
 	    }
@@ -155,14 +166,6 @@ class Patient{
 						  </ul>\
 						</div>"
 		}else{
-			/*
-			this.inalaFumaca = this.paciente.find("inalaFumaca").text();
-		this.habitoFumar = this.paciente.find("habitoFumar").text();
-		this.cigarrosDia = this.paciente.find("cigarrosDia").text();
-		this.anosFuma = this.paciente.find("anosFuma").text();
-		this.cargaTabagica = this.paciente.find("cargaTabagica").text();
-		this.tempoParou = [this.paciente.find("tempoParouDias"),this.paciente.find("tempoParo
-		*/
 			var element = "<div class='card' style='width: 100%; display:inline-block; float:left'> \
 						  <div style='background-color:lightblue;' class='card-header'>\
 						    Vícios\
@@ -189,8 +192,70 @@ class Patient{
 		return element;
 		}
 
+		setHistoricoTuberculose(){
+			this.morouTuberculose = this.paciente.find("morouTuberculose").text();
+			this.familiaTuberculose = this.paciente.find("familiaTuberculose").text();
+			this.trabalhoTuberculose = this.paciente.find("trabalhoTuberculose").text();
+			//
+			this.quantoTempoContato = this.paciente.find("quantoTempoContato").text();
+			this.horasSemanaisContato = this.paciente.find("horasSemanaisContato").text();
+			//
+			this.teveTuberculose = this.paciente.find("teveTuberculose").text();
+			this.quantosAnos = this.paciente.find("quantosAnos").text();
+			this.tratamento = this.paciente.find("tratamento").text();
+			this.outroTratamento = this.paciente.find("outroTratamento").text();
+			this.desfecho = this.paciente.find("desfecho").text();
+			this.riscoTbMdr = this.paciente.find("riscoTbMdr").text();
+			this.cicatrizBcg = this.paciente.find("cicatrizBcg").text();
+			this.internadoUltimosAnos = this.paciente.find("internadoUltimosAnos").text();
+			this.comorbidades = this.paciente.find("comorbidades").text();
+			this.quaisComorbidadesOutras = this.paciente.find("quaisComorbidadesOutras").text();
+
+
+			var element = "<div class='card'  style='width: 100%; display:inline-block; float:left' display:inline-block; float:left'> \
+							  <div style='background-color:lightblue;' class='card-header'>\
+							    Histórico\
+							  </div>\
+							  <ul style='float: left; display:table' class='list-group list-group-flush'>\
+							    <li class='list-group-item'>Morou em local com surto: "+this.morouTuberculose +"</li>\
+							    <li class='list-group-item'>Casos na família:"+this.familiaTuberculose+"</li>\
+							    <li class='list-group-item'>Sexo: "+this.sexo+"</li>\
+							    <li class='list-group-item'>Contato no trabalho com tuberculose: "+this.trabalhoTuberculose+"</li>";
+			
+			// trabalhou com tuberculose ? 
+			if (this.trabalhoTuberculose == "Sim" || this.trabalhoTuberculose == "sim") {
+				var contato = "<li class='list-group-item'>Tempo de contao: "+this.quantoTempoContato+" </li> \
+				<li class='list-group-item'>Horas de contato semanais: "+this.horasSemanaisContato+"</li>";
+				element = element + contato;
+			}
+			// teve tuberculose?
+			element = element +  ("<li class='list-group-item'>Teve tuberculose: "+this.teveTuberculose+"</li>");
+			if (this.teveTuberculose == "sim" || this.teveTuberculose == "Sim"){
+				var aux = "<li class='list-group-item'>Idade que adquiriu: "+this.quantosAnos+" </li> \
+				<li class='list-group-item'>Tratamento: "+this.tratamento+" </li> \
+				<li class='list-group-item'>Outro Tratamento:"+this.outroTratamento+" </li> \
+				<li class='list-group-item'>Desfecho:"+this.desfecho+" </li>";
+				element = element +  aux;
+			}
+			var element2 = "\
+							</ul>\
+							<ul style='float: left; display:table'>\
+							    <li class='list-group-item'>Risco TbMdr: "+this.riscoTbMdr+"</li>\
+							    <li class='list-group-item'>Cicatriz Bcg presente: "+this.cicatrizBcg+"</li>\
+							    <li class='list-group-item'>Renda Familiar: "+this.rendaFamiliarAtual+"</li>\
+							  	<li class='list-group-item'>Internado nos Ultimos anos: "+this.internadoUltimosAnos+"</li>\
+							  	<li class='list-group-item'>Comorbidades: "+this.comorbidades+"</li>\
+							 	<li class='list-group-item'>Outras Comorbidades: "+this.quaisComorbidadesOutras+"</li>\
+							  </ul>\
+							</div>"
+			element = element + element2;
+			return element;
+		}
+
 		
 	}
+
+
 
 
 
