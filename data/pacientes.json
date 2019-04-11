@@ -127,7 +127,7 @@
 				"comorbidades": "Ignorado",
 				"selecionouQuaisComorbidades": "falso",
 				"quaisComorbidadesOutras": "",
-				//feito ate aqui
+				//feito ate Aqui
 				"selecionouSinaisSintomas": "sim",
 				"sinaisSintomas": "Sim",
 				"selecionouQuaisSinaisSintomas": "falso",
@@ -138,6 +138,7 @@
 				"cansaco": "Cansaco (Astenia)",
 				"faltaAr": "Falta de ar (Dispneia)",
 				"outrosSintomas": "",
+				//
 				"selecionouExameFisico": "normal",
 				"exameFisico": "Normal",
 				"alteracoesExameFisico": "",

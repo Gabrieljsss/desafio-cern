@@ -10,13 +10,25 @@
   
 </div>
 
+<div class="jumbotron">
+  <h1 class="display-4">Bem vindo, USERNAME!</h1>
+  <p class="lead">Para acessar as informações de um paciente específico, forneça o número dele no campo abaixo.</p>
 
-<div style="width: 60%; margin: 0 auto;" class="input-group mb-3">
-  <input id="patientId" type="text" class="form-control" placeholder="Digite o número do paciente" aria-label="Recipient's username" aria-describedby="button-addon2">
-  <div class="input-group-append">
-    <button id="getPatientById" class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+  <!-- paciente id input -->
+  <div style="width: 60%;" class="input-group mb-3">
+    <input id="patientId" type="text" class="form-control" placeholder="Digite o número do paciente" aria-label="Recipient's username" aria-describedby="button-addon2">
+    <div class="input-group-append">
+      <button id="getPatientById" class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+    </div>
   </div>
+
+  <hr class="my-4">
+  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+  <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
 </div>
+
+
+
 
 <!-- modal paciente por id -->
 <div style="" id="patientModal" class="modal" tabindex="-1" role="dialog">
@@ -43,6 +55,8 @@
 </body>
 
 <script type="text/javascript" src="js/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script type="text/javascript" src="js/xml2json.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
