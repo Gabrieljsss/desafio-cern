@@ -4,7 +4,7 @@ let id = 42
 
 
 $(document).ready(function () {
-	console.log("nome:" + name);
+	$("#welcome").text("Bem vindo, " + $.cookie("username"));
 	$("#getPatientById").click(function(){
 		id = $("#patientId").val();
 		$("#titulo-paciente-modal").text("Paciente " + id);
@@ -24,26 +24,40 @@ function xmlRequest(){
 }
 
 function xmlParser(xml) {
-	console.log("xml");
 	xmlFile = xml;
-	console.log(xmlFile);
+
+	//console.log(xmlFile);
 	$(xml).find("paciente").each(function () {
+
 	    np = parseInt($(this).find("numeroPaciente").text());
 	    if (np == id) { //aparentemente dois pacientes podem ter o mesmo numero :(
-	    	console.log(this);
-	    	var p = new Patient(np, $(this));
+	    	
+	    	//utilizando isso aqui eu posso fazer um loop por cada tag do xml 
+	    	var texto = [];
+	    	var atributos = [];
+	    	for (var i = 0; i < $(this).children().length; i++) {
+	    		node = $($(this).children()[i]);
+	    		texto.push(node.text());
+	    		atributos.push(node[0].nodeName);
+
+	    	}	    	
+	    	var p = new Patient(np, $(this), atributos, texto);
 
 	    	let endereco = p.setEnredeco();
 	    	endereco = $(endereco);
 	    	let pessoais = $(p.setInfoPessoais());
 	    	let vicios = $(p.setVicios());
 	    	let historico = $(p.setHistoricoTuberculose());
+	    	let sitomas = $(p.setSintomas());
+	    	let exames = $(p.setExames());
 
 	    	
 	    	$("#modal-body").append(endereco);
 	    	$("#modal-body").append(pessoais);
 	    	$("#modal-body").append(vicios);
 	    	$("#modal-body").append(historico);
+	    	$("#modal-body").append(sitomas);
+	    	$("#modal-body").append(exames);
 	    	id = null;
 	    	openModalPaciente();
 	    }
@@ -61,9 +75,11 @@ function openModalPaciente(){
 }
 
 class Patient{
-	constructor(id, paciente){
-		this.id = id
-		this.paciente = paciente
+	constructor(id, paciente, atributos, valores){
+		this.id = id;
+		this.paciente = paciente;
+		this.atributos = atributos;
+		this.valores = valores;
 	}
 	setEnredeco(){
 		this.logradouro = this.paciente.find("logradouro").text();
@@ -135,7 +151,7 @@ class Patient{
 		this.cargaTabagica = this.paciente.find("cargaTabagica").text();
 		this.tempoParou = [this.paciente.find("tempoParouDias").text(),this.paciente.find("tempoParouMeses").text(), this.paciente.find("tempoParouAnos").text()];
 		for (var i = 0; i < this.tempoParou.length; i++) {
-			console.log(this.tempoParou[i]);
+			//console.log(this.tempoParou[i]);
 			if (this.tempoParou[i] == '') {
 				this.tempoParou[i] = "0";
 			}
@@ -253,7 +269,27 @@ class Patient{
 			element = element + element2;
 			return element;
 		}
-		setSintomasEExames(){
+		setSintomas(){
+			var element = "";
+			for (var i = 0; i < this.atributos.length; i++) {
+				if (this.atributos[i] == "selecionouSinaisSintomas" && this.valores[i] == "sim") {
+					i+=3;
+					while(this.atributos[i] != "selecionouExameFisico"){
+						//console.log(this.atributos[i]+": "+this.valores[i]);
+						element += createLiSintomas(this.atributos[i], this.valores[i]);
+						i++;
+					}
+					return "<div class='card' style='width: 18rem; display:inline-block; float:left'> \
+						  <div style='background-color:lightblue;' class='card-header'>\
+						    Sintomas\
+						  </div>\
+						  <ul class='list-group list-group-flush'>\
+						  "+element+"\
+						  </ul>\
+						</div>";
+				}
+			}
+		/*
 		this.sinaisSintomas = this.paciente.find("sinaisSintomas").text();
 		this.febre = this.paciente.find("febre").text();
 		this.sudorese = this.paciente.find("sudorese").text();
@@ -288,11 +324,67 @@ class Patient{
 						    <li class='list-group-item'>Natural de: "+this.cidadeNaturalidade+"</li>\
 						  </ul>\
 						</div>"
-		return element
+		return element */
 	}
+	setExames(){
+			var element = "";
+			var control = false;
+			for (var i = 0; i < this.atributos.length; i++) {
+				if (this.atributos[i] == "outrosSintomas") {
+					control = true;
+					i+=1;
+				}
+				if (control) {
+					if(!(this.atributos[i].includes("selecionou"))){
+						//console.log(this.atributos[i]);
+						//lidando com datas 
+						if (this.atributos[i].includes("txt_")) {
+							var dia = this.valores[i];
+							i++;
+							var mes = this.valores[i];
+							i++;
+							var ano = this.valores[i];
+							var data = dia + "/" + mes + "/" + ano
+							if (data ='//') {
+								data = "Não informado ";
+							}
+							element += createLiElement("Data", data);
+							i++;
+							continue;
+						}
+
+						//nenhum dado tem informacao de antigenos preenchida
+						if (this.atributos[i] == "antigenos") {
+							continue;
+						}
+						//console.log(this.atributos[i]+": "+this.valores[i]);
+						element += createLiElement(this.atributos[i], this.valores[i]);
+
+					}
+				}
+			}
+
+			return "<div class='card' style='width: 18rem; display:inline-block; float:left'> \
+						  <div style='background-color:lightblue;' class='card-header'>\
+						    Exames\
+						  </div>\
+						  <ul class='list-group list-group-flush'>\
+						  "+element+"\
+						  </ul>\
+						</div>";
+	}
+	
+
 
 		
 	}
+
+function createLiElement(atributo, val){
+	return "<li class='list-group-item'>"+atributo+": "+val+"</li>"
+}
+function createLiSintomas(atributo, val){
+	return "<li class='list-group-item'>"+val+"</li>"
+}
 
 
 let json = {

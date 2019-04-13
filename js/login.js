@@ -8,7 +8,7 @@ $(document).ready(function () {
 
 
 		if (email == "admin" && password == "admin") {	
-			document.cookie = "username=" + email;
+			$.cookie('username', email, { expires: 7, path: '/' });
 			window.location.href = "http://localhost:8080/main.html";
 			
 		}
