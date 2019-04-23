@@ -2,6 +2,13 @@ let numeroPaciente = []
 let xmlFile
 let id = 42
 
+let verEndereco;
+let verPessoais;
+let verVicios;
+let verHistorico;
+let verSintomas;
+let verExames;
+
 
 $(document).ready(function () {
 	$("#welcome").text("Bem vindo, " + $.cookie("username"));
@@ -9,6 +16,13 @@ $(document).ready(function () {
 		id = $("#patientId").val();
 		$("#titulo-paciente-modal").text("Paciente " + id);
 		$("#modal-body").empty();
+		verEndereco = $("#c-endereco").is(":checked");
+		verPessoais = $("#c-pessoais").is(":checked");
+		verVicios = $("#c-vicios").is(":checked");
+		verHistorico = $("#c-historico").is(":checked");
+		verSintomas = $("#c-sintomas").is(":checked");
+		verExames = $("#c-exames").is(":checked");
+
 		xmlRequest();
 	});
 });
@@ -51,24 +65,26 @@ function xmlParser(xml) {
 	    	let sitomas = $(p.setSintomas());
 	    	let exames = $(p.setExames());
 
-	    	
-	    	$("#modal-body").append(endereco);
-	    	$("#modal-body").append(pessoais);
-	    	$("#modal-body").append(vicios);
-	    	$("#modal-body").append(historico);
-	    	$("#modal-body").append(sitomas);
-	    	$("#modal-body").append(exames);
+	    	if (verEndereco) 
+	    		$("#modal-body").append(endereco);
+	    	if (verPessoais)
+	    		$("#modal-body").append(pessoais);
+	    	if (verVicios)
+	    		$("#modal-body").append(vicios);
+	    	if (verHistorico)
+	    		$("#modal-body").append(historico);
+	    	if (verSintomas)
+	    		$("#modal-body").append(sitomas);
+	    	if(verExames)
+	    		$("#modal-body").append(exames);
 	    	id = null;
 	    	openModalPaciente();
 	    }
-
-
  	});
 }
 
-function buildPatient(id){
 
-}
+
 
 function openModalPaciente(){
 	$("#patientModal").modal("show");
@@ -329,10 +345,17 @@ class Patient{
 	setExames(){
 			var element = "";
 			var control = false;
+
+			var middle = this.atributos.length;
+			var middleCount = 0;
+			var halfControl = true;
+
 			for (var i = 0; i < this.atributos.length; i++) {
 				if (this.atributos[i] == "outrosSintomas") {
 					control = true;
 					i+=1;
+					middle = (middle - i)/2;
+
 				}
 				if (control) {
 					if(!(this.atributos[i].includes("selecionou"))){
@@ -359,12 +382,18 @@ class Patient{
 						}
 						//console.log(this.atributos[i]+": "+this.valores[i]);
 						element += createLiElement(this.atributos[i], this.valores[i]);
-
 					}
+					if (middleCount >= middle && halfControl) {
+						element += "</ul>  <ul class='list-group list-group-flush'>";
+						halfControl = false;
+					}
+					middleCount+=1;
+
+
 				}
 			}
 
-			return "<div class='card' style='width: 18rem; display:inline-block; float:left'> \
+			return "<div class='card' style='width: 100%v; display:inline-block; float:left'> \
 						  <div style='background-color:lightblue;' class='card-header'>\
 						    Exames\
 						  </div>\

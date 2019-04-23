@@ -12,7 +12,7 @@
 
 <div class="jumbotron">
   <h1 id="welcome" class="display-4"></h1>
-  <p class="lead">Para acessar as informações de um paciente específico, forneça o número dele no campo abaixo.</p>
+  <p class="lead">Para acessar as informações de um paciente específico, forneça o número dele no campo abaixo e selecione as informações que se deseja obter.</p>
 
   <!-- paciente id input -->
   <div style="width: 60%;" class="input-group mb-3">
@@ -22,7 +22,67 @@
     </div>
   </div>
 
+    <div class="form-check checkbox">
+      <input type="checkbox" class="form-check-input" id="c-endereco">
+      <label class="form-check-label" for="exampleCheck1">Endereço</label>
+    </div>
+    <div class="form-check checkbox">
+      <input type="checkbox" class="form-check-input" id="c-pessoais">
+      <label class="form-check-label" for="exampleCheck1">Info. pessais</label>
+    </div>
+    <div class="form-check checkbox">
+      <input type="checkbox" class="form-check-input" id="c-vicios">
+      <label class="form-check-label" for="exampleCheck1">Vícios</label>
+    </div>
+    <div class="form-check checkbox">
+      <input type="checkbox" class="form-check-input" id="c-historico">
+      <label class="form-check-label" for="exampleCheck1">Histórico</label>
+    </div>
+    <div class="form-check checkbox">
+      <input type="checkbox" class="form-check-input" id="c-sitomas">
+      <label class="form-check-label" for="exampleCheck1">Sintomas</label>
+    </div>
+    <div class="form-check checkbox">
+      <input type="checkbox" class="form-check-input" id="c-exames">
+      <label class="form-check-label" for="exampleCheck1">Exames</label>
+    </div>
+
+    <br>
+
+
+
+
+
+
   <hr class="my-4">
+  <div class="input-group input-group-sm mb-3">
+
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="inputGroup-sizing-sm">Endereço</span>
+    </div>
+    <input id="input-endereco" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="inputGroup-sizing-sm">Info. Pessoais</span>
+    </div>
+    <input id="input-pessoais" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="inputGroup-sizing-sm">Vícios</span>
+    </div>
+    <input id="input-vicios" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="inputGroup-sizing-sm">Histórico</span>
+    </div>
+    <input id="input-historico" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="inputGroup-sizing-sm">Sintomas</span>
+    </div>
+    <input id="input-sintomas" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="inputGroup-sizing-sm">Exames</span>
+    </div>
+    <input id="input-endereco" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+  
+  </div>
   <p>Selecionar pacientes através de filtros coming soon...</p>
   <!--<a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a> -->
 </div>

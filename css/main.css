@@ -12,3 +12,9 @@ html, body {
 	padding: 20px;
 	background-color: white;
 }
+
+.checkbox{
+	display: inline-block; 
+	float: left;
+	margin-right: 10px;
+}
