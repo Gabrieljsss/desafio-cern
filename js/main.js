@@ -9,6 +9,8 @@ let verHistorico;
 let verSintomas;
 let verExames;
 
+let numeroPacientes = [];
+
 
 $(document).ready(function () {
 	$("#welcome").text("Bem vindo, " + $.cookie("username"));
@@ -25,6 +27,21 @@ $(document).ready(function () {
 
 		xmlRequest();
 	});
+
+	$("#pesquisaFiltros").click(function(){
+
+		//Necessário para mostrar os dados
+		verEndereco = $("#c-endereco").is(":checked");
+		verPessoais = $("#c-pessoais").is(":checked");
+		verVicios = $("#c-vicios").is(":checked");
+		verHistorico = $("#c-historico").is(":checked");
+		verSintomas = $("#c-sintomas").is(":checked");
+		verExames = $("#c-exames").is(":checked");
+
+		filtrosRequest();
+	});
+
+
 });
 
 
@@ -37,15 +54,68 @@ function xmlRequest(){
 	});
 }
 
-function xmlParser(xml) {
+function filtrosRequest(){
+	$.ajax({
+	    type: "GET",
+	    url: "data/pacientes.xml",
+	    dataType: "xml",
+	    success: parseXmlFiltros
+	});
+}
+
+function parseXmlFiltros(xml){
+	var xmlFile = xml;
+	var endereco = "Rio de Janeiro";
+	searchFiltros(xmlFile, endereco);
+}
+
+function searchFiltros(xml, endereco = ''){
+	var xmlFile = xml;
+	var count = 0;
+	var texto = [];
+	var atributos = [];
+
+	//valor fixo para testes apenas
+	endereco = "Rio de Janeiro";
+	
+	$(xml).find("paciente").each(function(){
+		//pega o numero de cada paciente 
+		var id = $($(this).children()[0]).text();
+		for (var i = 0; i < $(this).children().length; i++) {
+			node = $($(this).children()[i]);
+			texto.push(node.text());
+			if(node.text() == endereco){
+				count++;
+				//salva o id do cara que tem o atributo do filtro
+				numeroPacientes.push(id);
+				break;
+			}
+			atributos.push(node[0].nodeName);
+			
+		}
+	});
+
+
+	//o que vai acontecer aqui sera mostrar uma lista com o numero dos pacientes que se encaixam
+	//na busca desejada para que o user possa selecionar aqueles que ele queira
+	console.log(numeroPacientes);
+	alert(count);
+	id = parseInt(numeroPacientes[0]);
+	console.log(id);
+	xmlParser(xml);
+	
+
+}
+
+function xmlParser(xml) { //apresenta o paciente do id selecionado => pode ser reaproveitada
 	xmlFile = xml;
-
-	//console.log(xmlFile);
+	var found = false;
 	$(xml).find("paciente").each(function () {
-
 	    np = parseInt($(this).find("numeroPaciente").text());
-	    if (np == id) { //aparentemente dois pacientes podem ter o mesmo numero :(
-	    	
+			//acha pacientes apenas pelo id 
+			if (np == id) { //aparentemente dois pacientes podem ter o mesmo numero :(
+				alert("FOUDN IT!");
+				found = true;
 	    	//utilizando isso aqui eu posso fazer um loop por cada tag do xml 
 	    	var texto = [];
 	    	var atributos = [];
@@ -53,9 +123,10 @@ function xmlParser(xml) {
 	    		node = $($(this).children()[i]);
 	    		texto.push(node.text());
 	    		atributos.push(node[0].nodeName);
-
-	    	}	    	
-	    	var p = new Patient(np, $(this), atributos, texto);
+					
+				}	 
+				console.log("atributos" + atributos[0] + texto[0]);   	
+	    	var p = new Patient(np, $(this), atributos, texto); 
 
 	    	let endereco = p.setEnredeco();
 	    	endereco = $(endereco);
@@ -79,9 +150,14 @@ function xmlParser(xml) {
 	    		$("#modal-body").append(exames);
 	    	id = null;
 	    	openModalPaciente();
-	    }
- 	});
+			}
+	 });
+	 if(!found){
+		 alert("Paciente não encontrado. ");
+	 }
 }
+
+
 
 
 
@@ -96,6 +172,7 @@ class Patient{
 		this.paciente = paciente;
 		this.atributos = atributos;
 		this.valores = valores;
+		console.log(this.atributos);
 	}
 	setEnredeco(){
 		this.logradouro = this.paciente.find("logradouro").text();
