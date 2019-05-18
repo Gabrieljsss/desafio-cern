@@ -115,10 +115,10 @@ function searchFiltros(xml, endereco = '', filtro2 = '---', filtro3 = '---'){
 				//numeroPacientes.push(id);
 				//break;
 			}
-			if(node.text() == filtro2 || filtro2 != ''){
+			if(node.text() == filtro2 || filtro2 == ''){
 				c2 = 1;
 			}
-			if(node.text() == filtro3 || filtro3 != ''){
+			if(node.text() == filtro3 || filtro3 == ''){
 				c3 = 1;
 			}
 			atributos.push(node[0].nodeName);	
