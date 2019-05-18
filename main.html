@@ -65,11 +65,12 @@
     <div class="input-group-prepend">
       <span class="input-group-text" id="inputGroup-sizing-sm">Info. Pessoais</span>
     </div>
-    <input id="input-pessoais" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+    <input id="input-filtro-2" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
     <div class="input-group-prepend">
       <span class="input-group-text" id="inputGroup-sizing-sm">Vícios</span>
     </div>
-    <input id="input-vicios" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+    <input id="input-filtro-3" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+    <!--
     <div class="input-group-prepend">
       <span class="input-group-text" id="inputGroup-sizing-sm">Histórico</span>
     </div>
@@ -82,7 +83,7 @@
       <span class="input-group-text" id="inputGroup-sizing-sm">Exames</span>
     </div>
     <input id="input-endereco" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-    
+    -->
 
   </div>
   <button id="pesquisaFiltros">Pesquisa por filtros</button>
@@ -109,6 +110,27 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para a lista de pacientes que se encaixam nos filtros de pesquisa -->
+<div id="filtros-modal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Pacientes Encontrados</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="filtros-modal-body" class="modal-body">
+       
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

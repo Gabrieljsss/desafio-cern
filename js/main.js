@@ -29,7 +29,6 @@ $(document).ready(function () {
 	});
 
 	$("#pesquisaFiltros").click(function(){
-
 		//Necessário para mostrar os dados
 		verEndereco = $("#c-endereco").is(":checked");
 		verPessoais = $("#c-pessoais").is(":checked");
@@ -40,6 +39,22 @@ $(document).ready(function () {
 
 		filtrosRequest();
 	});
+
+	//exibir um dos pacientes da lista dos filtros
+	$('body').on('click', '#exibir-filtro', function() {
+		let filtro_id = parseInt($(this).siblings(".id").text());
+		$("#filtros-modal-body").empty();
+		closeFiltrosModal();
+		id = filtro_id;
+		xmlParser(xmlFile);
+	});
+
+	//quando esse modal fecha tem que resetar o vetor global de ids 
+	$('#filtros-modal').on('hidden.bs.modal', function () {
+		closeFiltrosModal();
+		$("#filtros-modal-body").empty();
+		numeroPacientes = []
+	})
 
 
 });
@@ -64,57 +79,91 @@ function filtrosRequest(){
 }
 
 function parseXmlFiltros(xml){
-	var xmlFile = xml;
+	xmlFile = xml;
 	var endereco = "Rio de Janeiro";
 	searchFiltros(xmlFile, endereco);
 }
 
-function searchFiltros(xml, endereco = ''){
-	var xmlFile = xml;
+function searchFiltros(xml, endereco = '', filtro2 = '---', filtro3 = '---'){
+	xmlFile = xml;
 	var count = 0;
 	var texto = [];
 	var atributos = [];
 
-	//valor fixo para testes apenas
-	endereco = "Rio de Janeiro";
+
+	var c1 = 0;
+	var c2 = 0;
+	var c3 = 0;
+
+
+	//tenho que tratar para o caso de entradas nulas
+	endereco = $("#input-endereco").val();
+	filtro2  = $("#input-filtro-2").val();
+	filtro3  = $("#input-filtro-3").val();
+
+	console.log(endereco, filtro2, filtro3);
 	
 	$(xml).find("paciente").each(function(){
-		//pega o numero de cada paciente 
+
 		var id = $($(this).children()[0]).text();
 		for (var i = 0; i < $(this).children().length; i++) {
 			node = $($(this).children()[i]);
 			texto.push(node.text());
-			if(node.text() == endereco){
-				count++;
+			if(node.text() == endereco || endereco == ''){
+				c1 = 1;
 				//salva o id do cara que tem o atributo do filtro
-				numeroPacientes.push(id);
-				break;
+				//numeroPacientes.push(id);
+				//break;
 			}
-			atributos.push(node[0].nodeName);
-			
+			if(node.text() == filtro2 || filtro2 != ''){
+				c2 = 1;
+			}
+			if(node.text() == filtro3 || filtro3 != ''){
+				c3 = 1;
+			}
+			atributos.push(node[0].nodeName);	
 		}
+
+		count = c1 + c2 + c3;
+
+		if(count == 3){
+			numeroPacientes.push(id);
+		}
+		c1 = 0;
+		c2 = 0;
+		c3 = 0;
 	});
 
 
 	//o que vai acontecer aqui sera mostrar uma lista com o numero dos pacientes que se encaixam
 	//na busca desejada para que o user possa selecionar aqueles que ele queira
+
+	//abrir o modal com os pacientes que se enquadram na pesquisa
 	console.log(numeroPacientes);
-	alert(count);
-	id = parseInt(numeroPacientes[0]);
-	console.log(id);
-	xmlParser(xml);
+	console.log("Foram encontrados: " + count);
+	for (let index = 0; index < numeroPacientes.length; index++) {
+		let element = createCardElement(numeroPacientes[index]);
+		$("#filtros-modal-body").append(element);
+		$("#filtros-modal-body").append($("<br>"));
+
+	}
+	openFiltrosModal();
+	
+	//id = parseInt(numeroPacientes[0]);
+	//console.log(id);
+	//xmlParser(xml);
 	
 
 }
 
 function xmlParser(xml) { //apresenta o paciente do id selecionado => pode ser reaproveitada
+	console.log("Vou buscar pelo id:" + id);
 	xmlFile = xml;
 	var found = false;
 	$(xml).find("paciente").each(function () {
 	    np = parseInt($(this).find("numeroPaciente").text());
 			//acha pacientes apenas pelo id 
 			if (np == id) { //aparentemente dois pacientes podem ter o mesmo numero :(
-				alert("FOUDN IT!");
 				found = true;
 	    	//utilizando isso aqui eu posso fazer um loop por cada tag do xml 
 	    	var texto = [];
@@ -158,12 +207,35 @@ function xmlParser(xml) { //apresenta o paciente do id selecionado => pode ser r
 }
 
 
+function createCardElement(id){
+	var card = $(" \
+	<div class='card'style='width: 18rem;'> \
+		<ul class='list-group list-group-flush'>\
+			<li class='list-group-item id'>"+ id +"</li>\
+			<li class='list-group-item'>Dapibus ac facilisis in</li>\
+			<button id='exibir-filtro' type='button' class='btn btn-secondary'>exibir</button>\
+		</ul>\
+	</div>\
+	")
 
+	return card
+
+}
 
 
 
 function openModalPaciente(){
 	$("#patientModal").modal("show");
+}
+function closeModalPaciente(){
+	$("#patientModal").modal("hide");
+}
+
+function openFiltrosModal(){
+	$("#filtros-modal").modal("show");
+}
+function closeFiltrosModal(){
+	$("#filtros-modal").modal("hide");
 }
 
 class Patient{
