@@ -11,7 +11,7 @@ let verExames;
 
 let numeroPacientes = [];
 
-
+//track DOM events
 $(document).ready(function () {
 	$("#welcome").text("Bem vindo, " + $.cookie("username"));
 	$("#getPatientById").click(function(){
@@ -55,6 +55,8 @@ $(document).ready(function () {
 		$("#filtros-modal-body").empty();
 		numeroPacientes = []
 	})
+	//permite popovers
+	 $('[data-toggle="popover"]').popover({trigger: "hover"});   
 
 
 });

@@ -58,11 +58,14 @@
   <hr class="my-4">
   <!-- resolver esse display none aqui e colocar isso pra funcionar -->
   <div class="input-group input-group-sm mb-3">
+    <!-- How to popover 
+<button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button>
 
+-->
     <div class="input-group-prepend">
       <span class="input-group-text" id="inputGroup-sizing-sm">Filtro 1</span>
     </div>
-    <input id="input-endereco" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+    <input data-toggle = "popover", data-content = "Se quiser um paciente do Rio de Janeiro, digite: Rio de Janeiro. " id="input-endereco" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
     <div class="input-group-prepend">
       <span class="input-group-text" id="inputGroup-sizing-sm">Filtro 2</span>
     </div>
@@ -136,6 +139,11 @@
   </div>
 </div>
 
+<!-- How to popover 
+<button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button>
+
+-->
+
 
 </body>
 
@@ -146,5 +154,5 @@
 <script type="text/javascript" src="js/xml2json.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-
+<script src="https://unpkg.com/popper.js"crossorigin="anonymous"></script>
 </html>
