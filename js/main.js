@@ -1,3 +1,5 @@
+
+//definicao das variaveis globais
 let numeroPaciente = []
 let xmlFile
 let id = 42
@@ -10,6 +12,8 @@ let verSintomas;
 let verExames;
 
 let numeroPacientes = [];
+let municipios = []
+let idades = []
 
 //track DOM events
 $(document).ready(function () {
@@ -54,7 +58,14 @@ $(document).ready(function () {
 		closeFiltrosModal();
 		$("#filtros-modal-body").empty();
 		numeroPacientes = []
+		municipios = []
+		idades = []
 	})
+	$('#patientModal').on('hidden.bs.modal', function () {
+		closeModalPaciente()
+		$("#modal-body").empty();
+	})
+
 	//permite popovers
 	 $('[data-toggle="popover"]').popover({trigger: "hover"});   
 
@@ -109,13 +120,13 @@ function searchFiltros(xml, endereco = '', filtro2 = '---', filtro3 = '---'){
 
 		var id = $($(this).children()[0]).text();
 		for (var i = 0; i < $(this).children().length; i++) {
+			
 			node = $($(this).children()[i]);
 			texto.push(node.text());
+			
+			//ifs para checar se o paciente se encaixa nos filtros forncecidos			
 			if(node.text() == endereco || endereco == ''){
 				c1 = 1;
-				//salva o id do cara que tem o atributo do filtro
-				//numeroPacientes.push(id);
-				//break;
 			}
 			if(node.text() == filtro2 || filtro2 == ''){
 				c2 = 1;
@@ -123,13 +134,28 @@ function searchFiltros(xml, endereco = '', filtro2 = '---', filtro3 = '---'){
 			if(node.text() == filtro3 || filtro3 == ''){
 				c3 = 1;
 			}
+			if (node[0].nodeName == "municipioEndereco"){
+				var municipio = node.text();
+			}
+			if (node[0].nodeName == "txt_anoNascimento"){
+				if(node.text() != ""){
+					var ano = parseInt(node.text());
+					ano = 2019 - ano;
+				}
+				else{
+					var ano = 0;
+				}
+			}			
 			atributos.push(node[0].nodeName);	
 		}
 
 		count = c1 + c2 + c3;
 
 		if(count == 3){
+			municipios.push(municipio);
 			numeroPacientes.push(id);
+			idades.push(ano);
+			
 		}
 		c1 = 0;
 		c2 = 0;
@@ -142,9 +168,9 @@ function searchFiltros(xml, endereco = '', filtro2 = '---', filtro3 = '---'){
 
 	//abrir o modal com os pacientes que se enquadram na pesquisa
 	console.log(numeroPacientes);
-	console.log("Foram encontrados: " + count);
+	console.log("Foram encontrados: " + numeroPacientes.length + "pacientes. ");
 	for (let index = 0; index < numeroPacientes.length; index++) {
-		let element = createCardElement(numeroPacientes[index]);
+		let element = createCardElement(numeroPacientes[index], idades[index], municipios[index]);
 		$("#filtros-modal-body").append(element);
 		$("#filtros-modal-body").append($("<br>"));
 
@@ -185,6 +211,7 @@ function xmlParser(xml) { //apresenta o paciente do id selecionado => pode ser r
 	    	let vicios = $(p.setVicios());
 	    	let historico = $(p.setHistoricoTuberculose());
 	    	let sitomas = $(p.setSintomas());
+	    	console.log(p.setSintomas());
 	    	let exames = $(p.setExames());
 
 	    	if (verEndereco) 
@@ -195,7 +222,7 @@ function xmlParser(xml) { //apresenta o paciente do id selecionado => pode ser r
 	    		$("#modal-body").append(vicios);
 	    	if (verHistorico)
 	    		$("#modal-body").append(historico);
-	    	if (verSintomas)
+				if (verSintomas)
 	    		$("#modal-body").append(sitomas);
 	    	if(verExames)
 	    		$("#modal-body").append(exames);
@@ -209,12 +236,16 @@ function xmlParser(xml) { //apresenta o paciente do id selecionado => pode ser r
 }
 
 
-function createCardElement(id){
+function createCardElement(id, idade = 0, municipio = null){
+	if (idade == 0) {
+		idade = "não informada";
+	}
 	var card = $(" \
 	<div class='card'style='width: 18rem;'> \
 		<ul class='list-group list-group-flush'>\
-			<li class='list-group-item id'>"+ id +"</li>\
-			<li class='list-group-item'>Dapibus ac facilisis in</li>\
+			<li class='list-group-item id'>Paciente número "+ id +"</li>\
+			<li class='list-group-item'>"+ municipio +"</li>\
+			<li class='list-group-item'>Idade: "+ idade +"</li>\
 			<button id='exibir-filtro' type='button' class='btn btn-secondary'>exibir</button>\
 		</ul>\
 	</div>\
@@ -446,7 +477,7 @@ class Patient{
 						element += createLiSintomas(this.atributos[i], this.valores[i]);
 						i++;
 					}
-					return "<div class='card' style='width: 18rem; display:inline-block; float:left'> \
+					var listaSintomas = "<div class='card' style='width: 18rem; display:inline-block; float:left'> \
 						  <div style='background-color:lightblue;' class='card-header'>\
 						    Sintomas\
 						  </div>\
@@ -454,6 +485,7 @@ class Patient{
 						  "+element+"\
 						  </ul>\
 						</div>";
+					return listaSintomas;
 				}
 			}
 		/*
