@@ -49,6 +49,7 @@ $(document).ready(function () {
 
 	//exibir um dos pacientes da lista dos filtros
 	$('body').on('click', '#exibir-filtro', function() {
+		console.log("id:" + $(this).siblings(".id").text());
 		let filtro_id = parseInt($(this).siblings(".id").text());
 		$("#filtros-modal-body").empty();
 		closeFiltrosModal();
@@ -287,7 +288,7 @@ function createCardElement(id, idade = 0, municipio = null){
 	var card = $(" \
 	<div class='card'style='width: 18rem;'> \
 		<ul class='list-group list-group-flush'>\
-			<li class='list-group-item id'>Paciente número "+ id +"</li>\
+			<li class='id list-group-item'>"+id+"</li>\
 			<li class='list-group-item'>"+ municipio +"</li>\
 			<li class='list-group-item'>Idade: "+ idade +"</li>\
 			<button id='exibir-filtro' type='button' class='btn btn-secondary'>exibir</button>\
