@@ -1,8 +1,8 @@
 
 //definicao das variaveis globais
-let numeroPaciente = []
-let xmlFile
-let id = 42
+let numeroPaciente = [];
+let xmlFile;
+let id = 42;
 
 let verEndereco;
 let verPessoais;
@@ -12,12 +12,15 @@ let verSintomas;
 let verExames;
 
 let numeroPacientes = [];
-let municipios = []
-let idades = []
+let municipios = [];
+let idades = [];
+
+let idsList = []; //para o menu lateral
 
 //track DOM events
 $(document).ready(function () {
 	$("#welcome").text("Bem vindo, " + $.cookie("username"));
+	preencheIdsRequest();
 	$("#getPatientById").click(function(){
 		id = $("#patientId").val();
 		$("#titulo-paciente-modal").text("Paciente " + id);
@@ -53,7 +56,22 @@ $(document).ready(function () {
 		xmlParser(xmlFile);
 	});
 
-	//quando esse modal fecha tem que resetar o vetor global de ids 
+	//exibe os dados do paciente a partir do menu lateral
+	$("body").on("click", "#sideMenuId", function(){
+		verEndereco = $("#c-endereco").is(":checked");
+		verPessoais = $("#c-pessoais").is(":checked");
+		verVicios = $("#c-vicios").is(":checked");
+		verHistorico = $("#c-historico").is(":checked");
+		verSintomas = $("#c-sintomas").is(":checked");
+		verExames = $("#c-exames").is(":checked");
+		console.log($(this).text());
+		id = parseInt($(this).text());
+
+		xmlParser(xmlFile);
+
+	});
+
+	//quando esse modal fecha tem que resetar o vetor global de ids
 	$('#filtros-modal').on('hidden.bs.modal', function () {
 		closeFiltrosModal();
 		$("#filtros-modal-body").empty();
@@ -67,10 +85,35 @@ $(document).ready(function () {
 	})
 
 	//permite popovers
-	 $('[data-toggle="popover"]').popover({trigger: "hover"});   
+	 $('[data-toggle="popover"]').popover({trigger: "hover"});
 
 
 });
+
+function preencheIdsRequest(){
+	$.ajax({
+	    type: "GET",
+	    url: "data/pacientes.xml",
+	    dataType: "xml",
+	    success: preencheIds
+	});
+}
+
+function preencheIds(data){
+	xmlFile = data;
+	console.log(data);
+	$(data).find("paciente").each(function(){
+		var id = $($(this).children()[0]).text();
+		idsList.push(id);
+	});
+	console.log(idsList);
+
+	for (var i = 0; i < idsList.length; i++) {
+		$("#mySidenav").append($(createLink(idsList[i])));
+	}
+
+}
+
 
 
 function xmlRequest(){
@@ -91,6 +134,7 @@ function filtrosRequest(){
 	});
 }
 
+//acho que eu devia apagr essa funcao :)
 function parseXmlFiltros(xml){
 	xmlFile = xml;
 	var endereco = "Rio de Janeiro";
@@ -115,16 +159,16 @@ function searchFiltros(xml, endereco = '', filtro2 = '---', filtro3 = '---'){
 	filtro3  = $("#input-filtro-3").val();
 
 	console.log(endereco, filtro2, filtro3);
-	
+
 	$(xml).find("paciente").each(function(){
 
 		var id = $($(this).children()[0]).text();
 		for (var i = 0; i < $(this).children().length; i++) {
-			
+
 			node = $($(this).children()[i]);
 			texto.push(node.text());
-			
-			//ifs para checar se o paciente se encaixa nos filtros forncecidos			
+
+			//ifs para checar se o paciente se encaixa nos filtros forncecidos
 			if(node.text() == endereco || endereco == ''){
 				c1 = 1;
 			}
@@ -145,8 +189,8 @@ function searchFiltros(xml, endereco = '', filtro2 = '---', filtro3 = '---'){
 				else{
 					var ano = 0;
 				}
-			}			
-			atributos.push(node[0].nodeName);	
+			}
+			atributos.push(node[0].nodeName);
 		}
 
 		count = c1 + c2 + c3;
@@ -155,7 +199,7 @@ function searchFiltros(xml, endereco = '', filtro2 = '---', filtro3 = '---'){
 			municipios.push(municipio);
 			numeroPacientes.push(id);
 			idades.push(ano);
-			
+
 		}
 		c1 = 0;
 		c2 = 0;
@@ -176,11 +220,11 @@ function searchFiltros(xml, endereco = '', filtro2 = '---', filtro3 = '---'){
 
 	}
 	openFiltrosModal();
-	
+
 	//id = parseInt(numeroPacientes[0]);
 	//console.log(id);
 	//xmlParser(xml);
-	
+
 
 }
 
@@ -190,20 +234,20 @@ function xmlParser(xml) { //apresenta o paciente do id selecionado => pode ser r
 	var found = false;
 	$(xml).find("paciente").each(function () {
 	    np = parseInt($(this).find("numeroPaciente").text());
-			//acha pacientes apenas pelo id 
+			//acha pacientes apenas pelo id
 			if (np == id) { //aparentemente dois pacientes podem ter o mesmo numero :(
 				found = true;
-	    	//utilizando isso aqui eu posso fazer um loop por cada tag do xml 
+	    	//utilizando isso aqui eu posso fazer um loop por cada tag do xml
 	    	var texto = [];
 	    	var atributos = [];
 	    	for (var i = 0; i < $(this).children().length; i++) {
 	    		node = $($(this).children()[i]);
 	    		texto.push(node.text());
 	    		atributos.push(node[0].nodeName);
-					
-				}	 
-				console.log("atributos" + atributos[0] + texto[0]);   	
-	    	var p = new Patient(np, $(this), atributos, texto); 
+
+				}
+				console.log("atributos" + atributos[0] + texto[0]);
+	    	var p = new Patient(np, $(this), atributos, texto);
 
 	    	let endereco = p.setEnredeco();
 	    	endereco = $(endereco);
@@ -214,7 +258,7 @@ function xmlParser(xml) { //apresenta o paciente do id selecionado => pode ser r
 	    	console.log(p.setSintomas());
 	    	let exames = $(p.setExames());
 
-	    	if (verEndereco) 
+	    	if (verEndereco)
 	    		$("#modal-body").append(endereco);
 	    	if (verPessoais)
 	    		$("#modal-body").append(pessoais);
@@ -255,6 +299,11 @@ function createCardElement(id, idade = 0, municipio = null){
 
 }
 
+function createLink(id){
+	var a = "<a id='sideMenuId' href = '#'>"+id+"</a>";
+	return a;
+}
+
 
 
 function openModalPaciente(){
@@ -270,6 +319,17 @@ function openFiltrosModal(){
 function closeFiltrosModal(){
 	$("#filtros-modal").modal("hide");
 }
+
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+/* Set the width of the side navigation to 0 */
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+
+
 
 class Patient{
 	constructor(id, paciente, atributos, valores){
@@ -437,8 +497,8 @@ class Patient{
 							    <li class='list-group-item'>Casos na família:"+this.familiaTuberculose+"</li>\
 							    <li class='list-group-item'>Sexo: "+this.sexo+"</li>\
 							    <li class='list-group-item'>Contato no trabalho com tuberculose: "+this.trabalhoTuberculose+"</li>";
-			
-			// trabalhou com tuberculose ? 
+
+			// trabalhou com tuberculose ?
 			if (this.trabalhoTuberculose == "Sim" || this.trabalhoTuberculose == "sim") {
 				var contato = "<li class='list-group-item'>Tempo de contao: "+this.quantoTempoContato+" </li> \
 				<li class='list-group-item'>Horas de contato semanais: "+this.horasSemanaisContato+"</li>";
@@ -496,7 +556,7 @@ class Patient{
 		this.emagrecimento =this.paciente.find("emagrecimento").text();
 		this.cansaco = this.paciente.find("cansaco").text();
 		this.faltaAr = this.paciente.find("faltaAr").text();
-		
+
 		this.outrosSintomas = this.paciente.find("outrosSintomas").text();
 		this.exameFisico = this.paciente.find("exameFisico").text();
 		this.faltaAr = this.paciente.find("faltaAr").text();
@@ -543,7 +603,7 @@ class Patient{
 				if (control) {
 					if(!(this.atributos[i].includes("selecionou"))){
 						//console.log(this.atributos[i]);
-						//lidando com datas 
+						//lidando com datas
 						if (this.atributos[i].includes("txt_")) {
 							var dia = this.valores[i];
 							i++;
@@ -585,10 +645,10 @@ class Patient{
 						  </ul>\
 						</div>";
 	}
-	
 
 
-		
+
+
 	}
 
 function createLiElement(atributo, val){
@@ -4259,28 +4319,28 @@ let json = {
     constructor(id, logradouro,numero,complemento, estadoEndereco,
     			municipio, bairro, cep, telefone1, telefone2, diaNascimento,
     			mesNascimento, anoNascimento, sexo, estadoCivil, estuda, escolaridade,
-    			ocupacao, outraFuncao, profissionalSaude, atividadeTrabalho, 
-    			rendaAtual, rendaPassado, grauInstrucaoaChefe, haveAspirador, 
+    			ocupacao, outraFuncao, profissionalSaude, atividadeTrabalho,
+    			rendaAtual, rendaPassado, grauInstrucaoaChefe, haveAspirador,
     			haveAutomovel, haveBanheiro, haveEmpregada, haveFreezer,
-    			haveGeladeiraDuple, haveGeladeiraSimples, haveMaquinaLavar, haveRadio, 
+    			haveGeladeiraDuple, haveGeladeiraSimples, haveMaquinaLavar, haveRadio,
     			haveTelevisao, haveDvd, naturalidadeEstado, cidadeNaturalidade, tempoEnderecoAtual,
-    			morouOutro, numeroPessoas, numeroComodos, numeroDormitorios, moradorRua, moradorAsilo, 
-    			exDetento, habitoFumar, inalaFumaca, cigarrosDia, anaosFuma, cargaTabagica, tempoParou, 
+    			morouOutro, numeroPessoas, numeroComodos, numeroDormitorios, moradorRua, moradorAsilo,
+    			exDetento, habitoFumar, inalaFumaca, cigarrosDia, anaosFuma, cargaTabagica, tempoParou,
     			usuarioDrogas, bebidaPreferida, tomaBebida, facilidadeAmizades, deveriaDiminuir, recebeuCritica,
-    			bebeManha, senteCulpa, morouTuberculose, familiaTuberculose, trabalhoTuberculose, tempoContato, 
-    			teveTuberculose, quantosAnos, tratamento, outroTratamento, desfecho, riscoTbMdr, cicatrizBcg, 
+    			bebeManha, senteCulpa, morouTuberculose, familiaTuberculose, trabalhoTuberculose, tempoContato,
+    			teveTuberculose, quantosAnos, tratamento, outroTratamento, desfecho, riscoTbMdr, cicatrizBcg,
     			internadoUltimosAnos, Comorbidades, sintomas, exameFisico, alteracaoExameFisico,
     			resultadoAntiHiv, probabilidadeSemAvaliacao, observacoes, teleradiografia, diaTele,
-    			areaAcometida, volumeDerramePleural, derramePleuralLivre, alteracoesPulmonares, 
-    			qualAssociacao, qualAlteracao, provaTuberculinicaReatora, dataProva, dataLeitura, 
+    			areaAcometida, volumeDerramePleural, derramePleuralLivre, alteracoesPulmonares,
+    			qualAssociacao, qualAlteracao, provaTuberculinicaReatora, dataProva, dataLeitura,
     			milimetrosEnduracao, leitor, resultadoCiometria, resultadoProteinas, resultadoRazaoProteina,
-    			resultadoRazaoLdh, baarLp, barrEscarro1, intensidade1, barrEscarro2, intensidade2, 
+    			resultadoRazaoLdh, baarLp, barrEscarro1, intensidade1, barrEscarro2, intensidade2,
     			barrEscarroInduzido, intensidadeInduzido, adaLiquidoPleural, quantidade,
-    			probabilidadeComAvaliacao, culturaMicro, metodo, resultado, tipificacao, resultadoExameHistopatologico, 
-    			culturaMicrobacterias, metodoCultura, resultadoCultura, tipificacaoCultura, sorologiaLp, 
-    			antigenos, resultadoSorologia, pcr, tecnica, resultadoPcr, outroExame, exame, resultadoOutro, 
+    			probabilidadeComAvaliacao, culturaMicro, metodo, resultado, tipificacao, resultadoExameHistopatologico,
+    			culturaMicrobacterias, metodoCultura, resultadoCultura, tipificacaoCultura, sorologiaLp,
+    			antigenos, resultadoSorologia, pcr, tecnica, resultadoPcr, outroExame, exame, resultadoOutro,
     			probabilidadeAposExame, dataFinal, obsFinal
     			) {
-      
+
     }
 }*/

@@ -7,13 +7,18 @@
   <meta charset="utf-8">
 </head>
 <body>
+
+
 <div id="pacientePorId">
-  
+
 </div>
 
 <div class="jumbotron">
+	<span style="position: relative; top:-65px; left: -35px;" onclick="openNav()"> <img src = "css/menu.png" style = "width:50px ; height:50px">  </span>
+
+
   <h1 id="welcome" class="display-4"></h1>
-  <p class="lead">Para acessar as informações de um paciente específico, forneça o número dele no campo abaixo e selecione as informações que se deseja obter.</p>
+  <p class="lead">Para acessar as informações de um paciente específico, forneça o número dele no campo abaixo e selecione as informações que se deseja obter. Uma lista com o número de todos os pacientes cadastrados pode ser acessada no menu lateral. Caso não saiba o número do paciente, tente econtrá-lo fornecendo até três filtros nos campos abaixo. </p>
 
   <!-- paciente id input -->
   <div style="width: 60%;" class="input-group mb-3">
@@ -58,7 +63,7 @@
   <hr class="my-4">
   <!-- resolver esse display none aqui e colocar isso pra funcionar -->
   <div class="input-group input-group-sm mb-3">
-    <!-- How to popover 
+    <!-- How to popover
 <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button>
 
 -->
@@ -129,7 +134,7 @@
         </button>
       </div>
       <div id="filtros-modal-body" class="modal-body">
-       
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary">Save changes</button>
@@ -139,10 +144,28 @@
   </div>
 </div>
 
-<!-- How to popover 
+<!-- How to popover
 <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button>
 
 -->
+<!--
+Teste de um menu sidebar com todos os pacientes da base de dados
+-->
+
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <h3 style="margin-left: 10px;color: lightgrey"> Pacientes cadastrados:</h3>
+
+
+</div>
+
+<!-- Use any element to open the sidenav -->
+
+<!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
+<div id="main">
+  ...
+</div>
+
 
 
 </body>
