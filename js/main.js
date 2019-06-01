@@ -17,6 +17,11 @@ let idades = [];
 
 let idsList = []; //para o menu lateral
 
+
+//autocomplete list
+let possibleValues = []
+
+
 //track DOM events
 $(document).ready(function () {
 	$("#welcome").text("Bem vindo, " + $.cookie("username"));
@@ -86,7 +91,11 @@ $(document).ready(function () {
 	})
 
 	//permite popovers
-	 $('[data-toggle="popover"]').popover({trigger: "hover"});
+	$('[data-toggle="popover"]').popover({trigger: "hover"});
+
+	
+	//chama o plugin de autocomplete
+
 
 
 });
@@ -100,14 +109,28 @@ function preencheIdsRequest(){
 	});
 }
 
+
+
+// percorre inicialmente todos os dados para pegar os ids e os possiveis valores para os campos de busca 
 function preencheIds(data){
 	xmlFile = data;
 	console.log(data);
 	$(data).find("paciente").each(function(){
 		var id = $($(this).children()[0]).text();
+		for (var i = 0; i < $(this).children().length; i++) {
+			node = $($(this).children()[i]);
+			possibleValues.push(node.text());
+		}
 		idsList.push(id);
 	});
 	console.log(idsList);
+	possibleValues = [... new Set(possibleValues)]
+	console.log(possibleValues);
+
+	//quando as redundancias forem resolvidas, adcionar os possveis valores ao input 
+	$( ".tags" ).autocomplete({
+		source: possibleValues
+	});
 
 	for (var i = 0; i < idsList.length; i++) {
 		$("#mySidenav").append($(createLink(idsList[i])));
