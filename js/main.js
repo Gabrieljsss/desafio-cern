@@ -304,6 +304,8 @@ function xmlParser(xml) { //apresenta o paciente do id selecionado => pode ser r
 }
 
 
+
+///////////////////////////////////////// manipulacao do DOM ////////////////////////////////////////////////////////////////////////////////////////////////////////// 
 function createCardElement(id, idade = 0, municipio = null){
 	if (idade == 0) {
 		idade = "não informada";
@@ -322,14 +324,10 @@ function createCardElement(id, idade = 0, municipio = null){
 	return card
 
 }
-
 function createLink(id){
 	var a = "<a id='sideMenuId' href = '#'>"+id+"</a>";
 	return a;
 }
-
-
-
 function openModalPaciente(){
 	$("#patientModal").modal("show");
 }
@@ -353,8 +351,19 @@ function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
 }
 
+function createLiElement(atributo, val){
+	return "<li class='list-group-item'>"+atributo+": "+val+"</li>"
+}
+function createLiSintomas(atributo, val){
+	return "<li class='list-group-item'>"+val+"</li>"
+}
 
 
+
+
+
+
+//////////////////// Classe que constroi o paciente e prepara os dados para a apresentacao individual /////////////////////////////////////////////////////////
 class Patient{
 	constructor(id, paciente, atributos, valores){
 		this.id = id;
@@ -675,9 +684,3 @@ class Patient{
 
 	}
 
-function createLiElement(atributo, val){
-	return "<li class='list-group-item'>"+atributo+": "+val+"</li>"
-}
-function createLiSintomas(atributo, val){
-	return "<li class='list-group-item'>"+val+"</li>"
-}
