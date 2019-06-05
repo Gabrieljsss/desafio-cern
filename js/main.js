@@ -24,6 +24,10 @@ let possibleValues = []
 
 //track DOM events
 $(document).ready(function () {
+	//teste area
+	newFiltrosSearch();
+	//
+
 	$("#welcome").text("Bem vindo, " + $.cookie("username"));
 	preencheIdsRequest();
 	$("#getPatientById").click(function(){
@@ -176,6 +180,8 @@ function searchFiltros(xml, endereco = '', filtro2 = '---', filtro3 = '---'){
 	var c2 = 0;
 	var c3 = 0;
 
+	var c = 0;
+
 
 	//tenho que tratar para o caso de entradas nulas
 	endereco = $("#input-endereco").val();
@@ -186,9 +192,11 @@ function searchFiltros(xml, endereco = '', filtro2 = '---', filtro3 = '---'){
 
 	$(xml).find("paciente").each(function(){
 
+
+
 		var id = $($(this).children()[0]).text();
 		for (var i = 0; i < $(this).children().length; i++) {
-
+		
 			node = $($(this).children()[i]);
 			texto.push(node.text());
 
@@ -215,7 +223,22 @@ function searchFiltros(xml, endereco = '', filtro2 = '---', filtro3 = '---'){
 				}
 			}
 			atributos.push(node[0].nodeName);
+			
+
+
+			//estrutura que possibilita a busca em um numero infinito de filtros
+			//fazer a parte dinamica da parada aqui ////////////////////////////////////////
+			var filtros = $("#filtros").children(".tags");
+			$(filtros).each(function(){
+				if(node.text() == $(this).val() && node.text() != "" && $(this).val() != "" ){
+					c++;
+				}
+			})
+			//fazer a parte dinamica da parada aqui ////////////////////////////////////////
 		}
+
+
+
 
 		count = c1 + c2 + c3;
 
@@ -229,6 +252,8 @@ function searchFiltros(xml, endereco = '', filtro2 = '---', filtro3 = '---'){
 		c2 = 0;
 		c3 = 0;
 	});
+
+
 
 
 	//o que vai acontecer aqui sera mostrar uma lista com o numero dos pacientes que se encaixam
@@ -251,6 +276,17 @@ function searchFiltros(xml, endereco = '', filtro2 = '---', filtro3 = '---'){
 
 
 }
+
+function newFiltrosSearch(){
+	var filtros = $("#filtros").children(".tags");
+	$(filtros).each(function(){
+		console.log($(this));
+	})
+
+}
+
+
+
 
 function xmlParser(xml) { //apresenta o paciente do id selecionado => pode ser reaproveitada
 	console.log("Vou buscar pelo id:" + id);

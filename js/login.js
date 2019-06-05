@@ -29,7 +29,7 @@ function login(xml){
 	    		console.log(user, username);
 	    		if (user == username && passwd == password) {
 	    			$.cookie('username', username, { expires: 7, path: '/' });
-					window.location.href = "http://localhost:8080/main.html";
+					window.location.href = "http://localhost/desafio-cern/main.html";
 	    		}
 	    	});
 	    }
