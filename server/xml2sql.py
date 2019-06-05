@@ -1,12 +1,11 @@
 import xml.etree.ElementTree as ET
 import mysql.connector 
+
+
 '''
 Gera  uma tabela a partir das informacoes armazenadas no xml
 
 '''
-
-
-
 
 tree = ET.parse('../data/pacientes.xml')
 
