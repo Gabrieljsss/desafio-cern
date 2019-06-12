@@ -22,7 +22,7 @@
 
 
   <h1 id="welcome" class="display-4"></h1>
-  <p class="lead">Para acessar as informações de um paciente específico, forneça o número dele no campo abaixo e selecione as informações que se deseja obter. Uma lista com o número de todos os pacientes cadastrados pode ser acessada no menu lateral. Caso não saiba o número do paciente, tente econtrá-lo fornecendo até três filtros nos campos abaixo. </p>
+  <p class="lead">Para acessar as informações de um paciente específico, forneça o número dele no campo abaixo e selecione as informações que se deseja obter. Uma lista com o número de todos os pacientes cadastrados pode ser acessada no menu lateral.</p>
 
   <!-- paciente id input -->
   <div style="width: 60%;" class="input-group mb-3">
@@ -66,29 +66,35 @@
 
   <hr class="my-4">
   <!-- resolver esse display none aqui e colocar isso pra funcionar -->
+  <p class="lead">Caso não saiba o número do paciente, tente econtrá-lo fornecendo alguns dados sobre ele. Em cada campo de busca, forneça uma informação do paciente desejado e o sistema mostrará todos aqueles que se encaixem nos parâmetros fornecidos. Ex.: Quer ver os pacientes com Astenia e Febre? Basta digitar astenia em um dos campos abaixo e febre no outro!</p>
+
   <div id="filtros" class="input-group input-group-sm mb-3">
     <!-- How to popover
 <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button>
 
 -->
+
+
     <div class="input-group-prepend">
-      <span class="input-group-text" id="inputGroup-sizing-sm">Filtro 1</span>
+      <span class="input-group-text" id="inputGroup-sizing-sm"></span>
     </div>
-    <input data-toggle = "popover", data-content = "Se quiser um paciente do Rio de Janeiro, digite: Rio de Janeiro. " id="input-endereco" type="text" class="form-control tags" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+    <input style="width: 32%" data-toggle = "popover", data-content = "Se quiser um paciente do Rio de Janeiro, digite: Rio de Janeiro. " id="input-endereco" type="text" class="form-control tags" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
     <div class="input-group-prepend">
-      <span class="input-group-text" id="inputGroup-sizing-sm">Filtro 2</span>
+      <span class="input-group-text" id="inputGroup-sizing-sm"></span>
     </div>
-    <input  data-toggle = "popover", data-content = "Se quiser um paciente do Rio de Janeiro, digite: Rio de Janeiro. " id="input-filtro-2" type="text" class="form-control tags" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+    <input  style="width: 32% " data-toggle = "popover", data-content = "Se quiser um paciente com o sintoma de cansaço, digite: Cansaço. " id="input-filtro-2" type="text" class="form-control tags" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
     <div class="input-group-prepend">
-      <span class="input-group-text" id="inputGroup-sizing-sm">Filtro 3</span>
+      <span class="input-group-text" id="inputGroup-sizing-sm"></span>
     </div>
-    <input  data-toggle = "popover", data-content = "Se quiser um paciente do Rio de Janeiro, digite: Rio de Janeiro. " id="input-filtro-3" type="text" class="form-control tags" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+    <input  style="width: 32%" data-toggle = "popover", data-content = "Se quiser um paciente do Rio de Janeiro, digite: Rio de Janeiro. " id="input-filtro-3" type="text" class="form-control tags" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
     <!--
 			nao foi usado
     -->
 
   </div>
-  <button class="btn btn-outline-secondary" id="pesquisaFiltros">Pesquisa por filtros</button>
+  <button id="btn-add-filtro" type="button" class="btn btn-outline-secondary"><img width="20px" height="20px" src="https://img.icons8.com/flat_round/64/000000/plus.png"></button>
+  <button class="btn btn-outline-secondary" id="pesquisaFiltros">Pesquisar</button> 
+
   <!--<a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a> -->
 </div>
 
@@ -109,8 +115,7 @@
         <!-- corpo do modal: aqui que os elementos sao adds de forma dinamica -->
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
       </div>
     </div>
   </div>
@@ -121,7 +126,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Pacientes Encontrados</h5>
+        <h5 id = "pacientes-encontrados-titulo"class="modal-title">Pacientes Encontrados</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -130,8 +135,7 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Save changes</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
       </div>
     </div>
   </div>

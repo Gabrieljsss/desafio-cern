@@ -88,11 +88,15 @@ $(document).ready(function () {
 		numeroPacientes = []
 		municipios = []
 		idades = []
-	})
+	});
 	$('#patientModal').on('hidden.bs.modal', function () {
 		closeModalPaciente()
 		$("#modal-body").empty();
-	})
+	});
+
+	$("#btn-add-filtro").click(function(){
+		newSearchFilter();		
+	});
 
 	//permite popovers
 	$('[data-toggle="popover"]').popover({trigger: "hover"});
@@ -174,7 +178,16 @@ function searchFiltros(xml, endereco = '', filtro2 = '---', filtro3 = '---'){
 	var count = 0;
 	var texto = [];
 	var atributos = [];
+	var aux = [];
 
+	var length = $("#filtros").children(".tags").length;
+
+	//acha o length real desconsiderando os campos vazios
+	$($("#filtros").children(".tags")).each(function(){
+		if($(this).val() == ""){
+			length--;
+		}
+	})
 
 	var c1 = 0;
 	var c2 = 0;
@@ -237,17 +250,25 @@ function searchFiltros(xml, endereco = '', filtro2 = '---', filtro3 = '---'){
 			//fazer a parte dinamica da parada aqui ////////////////////////////////////////
 		}
 
-
+		console.log("c: " + c + ", length: " + length);
+		if(c >= length){
+			aux.push(id);
+			municipios.push(municipio);
+			numeroPacientes.push(id);
+			idades.push(ano);
+		}c=0;
 
 
 		count = c1 + c2 + c3;
 
-		if(count == 3){
+
+		//esse if que CONTROLAVA as condicoes de apresentacao na busca por filtros
+		/*if(count == 3){
 			municipios.push(municipio);
 			numeroPacientes.push(id);
 			idades.push(ano);
 
-		}
+		}*/
 		c1 = 0;
 		c2 = 0;
 		c3 = 0;
@@ -260,8 +281,10 @@ function searchFiltros(xml, endereco = '', filtro2 = '---', filtro3 = '---'){
 	//na busca desejada para que o user possa selecionar aqueles que ele queira
 
 	//abrir o modal com os pacientes que se enquadram na pesquisa
+	console.log(aux);
 	console.log(numeroPacientes);
 	console.log("Foram encontrados: " + numeroPacientes.length + "pacientes. ");
+	$("#pacientes-encontrados-titulo").text("Foram encontrados " + numeroPacientes.length + " pacientes");
 	for (let index = 0; index < numeroPacientes.length; index++) {
 		let element = createCardElement(numeroPacientes[index], idades[index], municipios[index]);
 		$("#filtros-modal-body").append(element);
@@ -347,7 +370,7 @@ function createCardElement(id, idade = 0, municipio = null){
 		idade = "não informada";
 	}
 	var card = $(" \
-	<div class='card'style='width: 18rem;'> \
+	<div class='card'style='width: 18rem; margin: 0 auto;'> \
 		<ul class='list-group list-group-flush'>\
 			<li class='id list-group-item'>"+id+"</li>\
 			<li class='list-group-item'>"+ municipio +"</li>\
@@ -393,7 +416,24 @@ function createLiElement(atributo, val){
 function createLiSintomas(atributo, val){
 	return "<li class='list-group-item'>"+val+"</li>"
 }
+function newSearchFilter(){
+	var filtro = "<div class='input-group-prepend'> \
+									<span class='input-group-text' id='inputGroup-sizing-sm'></span> \
+								</div> \
+								<input style = 'width: 33.33%' data-toggle = 'popover', data-content = 'Se quiser um paciente do Rio de Janeiro, digite: Rio de Janeiro. ' id='input-endereco' type='text' class='form-control tags' aria-label='Small' aria-describedby='inputGroup-sizing-sm'> \
+								"
+	filtro = $(filtro);
+	$("#filtros").append(filtro);
 
+	$( ".tags" ).autocomplete({
+		source: possibleValues
+	});
+
+	$('[data-toggle="popover"]').popover({trigger: "hover"});
+
+
+
+	}
 
 
 
