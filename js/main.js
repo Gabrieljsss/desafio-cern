@@ -80,6 +80,15 @@ $(document).ready(function () {
 		xmlParser(xmlFile);
 
 	});
+	
+	//ver todos vai fazer uma especia de sobrecarga do metodo de mostrar pelo filtro aproveitando o fato de que quando todos os 
+	//os filtros estao vazios, uma lista de todos os pacientes e exibida
+	$("#ver-todos").click(function(){
+		alert("helloooo");
+		$(".tags").val("");
+		$("#pesquisaFiltros").click();
+		
+	});
 
 	//quando esse modal fecha tem que resetar o vetor global de ids
 	$('#filtros-modal').on('hidden.bs.modal', function () {
@@ -439,7 +448,7 @@ function newSearchFilter(){
 
 
 
-//////////////////// Classe que constroi o paciente e prepara os dados para a apresentacao individual /////////////////////////////////////////////////////////
+//////////////////// builds a patient and shows data  /////////////////////////////////////////////////////////
 class Patient{
 	constructor(id, paciente, atributos, valores){
 		this.id = id;
