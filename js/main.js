@@ -84,7 +84,6 @@ $(document).ready(function () {
 	//ver todos vai fazer uma especia de sobrecarga do metodo de mostrar pelo filtro aproveitando o fato de que quando todos os 
 	//os filtros estao vazios, uma lista de todos os pacientes e exibida
 	$("#ver-todos").click(function(){
-		alert("helloooo");
 		$(".tags").val("");
 		$("#pesquisaFiltros").click();
 		
@@ -206,11 +205,11 @@ function searchFiltros(xml, endereco = '', filtro2 = '---', filtro3 = '---'){
 
 
 	//tenho que tratar para o caso de entradas nulas
-	endereco = $("#input-endereco").val();
+	/*endereco = $("#input-endereco").val();
 	filtro2  = $("#input-filtro-2").val();
 	filtro3  = $("#input-filtro-3").val();
 
-	console.log(endereco, filtro2, filtro3);
+	console.log(endereco, filtro2, filtro3);*/
 
 	$(xml).find("paciente").each(function(){
 
@@ -223,7 +222,7 @@ function searchFiltros(xml, endereco = '', filtro2 = '---', filtro3 = '---'){
 			texto.push(node.text());
 
 			//ifs para checar se o paciente se encaixa nos filtros forncecidos
-			if(node.text() == endereco || endereco == ''){
+			/*if(node.text() == endereco || endereco == ''){
 				c1 = 1;
 			}
 			if(node.text() == filtro2 || filtro2 == ''){
@@ -231,7 +230,7 @@ function searchFiltros(xml, endereco = '', filtro2 = '---', filtro3 = '---'){
 			}
 			if(node.text() == filtro3 || filtro3 == ''){
 				c3 = 1;
-			}
+			}*/
 			if (node[0].nodeName == "municipioEndereco"){
 				var municipio = node.text();
 			}
@@ -252,7 +251,7 @@ function searchFiltros(xml, endereco = '', filtro2 = '---', filtro3 = '---'){
 			//fazer a parte dinamica da parada aqui ////////////////////////////////////////
 			var filtros = $("#filtros").children(".tags");
 			$(filtros).each(function(){
-				if(node.text() == $(this).val() && node.text() != "" && $(this).val() != "" ){
+				if(node.text() == $(this).val().trim() && node.text() != "" && $(this).val() != "" ){
 					c++;
 				}
 			})
@@ -324,6 +323,20 @@ function xmlParser(xml) { //apresenta o paciente do id selecionado => pode ser r
 	console.log("Vou buscar pelo id:" + id);
 	xmlFile = xml;
 	var found = false;
+
+	if(id == "42"){
+		alert("Paciente 42 pelo id");
+		
+		$(".tags").val("");
+		$("#input-endereco").val("42");
+		$("#input-filtro-2").val("270");
+		filtrosRequest();
+		found = true;
+		//$(".tags").val("");
+		return;
+		 
+	}
+
 	$(xml).find("paciente").each(function () {
 	    np = parseInt($(this).find("numeroPaciente").text());
 			//acha pacientes apenas pelo id
